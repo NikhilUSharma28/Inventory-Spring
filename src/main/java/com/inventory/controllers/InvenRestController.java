@@ -11,12 +11,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
 import com.inventory.entity.Inventory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import com.inventory.service.InvenService;
+
 
 @Path("/product")
 public class InvenRestController {
@@ -30,32 +32,28 @@ public class InvenRestController {
 		List<Inventory> list = invenService.getAll();
 		return list;
 	}
+	
+	@POST
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Inventory> save(Inventory inventory) throws DataAccessException, IOException {
+		invenService.save(inventory);
+		return getProducts();
+	}
 
-//	@GET
-//	@Path("/{id}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Inventory getProductById(@PathParam("id") int id) throws DataAccessException, IOException {
-//		return invenService.getById(id);
-//	}
-
-//	@POST
-//	@Path("/add")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public void save(Inventory inventory) throws DataAccessException, IOException {
-//		invenService.save(inventory);
-//	}
-//
-//	@PUT
-//	@Path("/update")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public void updateProduct(Inventory inventory) throws DataAccessException, IOException {
-//		invenService.update(inventory);
-//	}
-//
-//	@DELETE
-//	@Path("/{id}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public void deleteCountry(@PathParam("id") int id) throws DataAccessException, IOException {
-//		invenService.delete(id);
-//	}
+	@PUT
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Inventory> updateProduct(Inventory inventory) throws DataAccessException, IOException {
+		invenService.update(inventory);
+		return getProducts();
+	}
+	
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Inventory> deleteProduct(@PathParam("id") int id) throws DataAccessException, IOException {
+		invenService.delete(id);
+		return getProducts();
+	}
 }
